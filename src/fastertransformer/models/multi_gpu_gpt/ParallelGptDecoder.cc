@@ -256,7 +256,8 @@ ParallelGptDecoder<T>::~ParallelGptDecoder()
 template<typename T>
 void ParallelGptDecoder<T>::forward(std::unordered_map<std::string, Tensor>*              output_tensors,
                                     const std::unordered_map<std::string, Tensor>*        input_tensors,
-                                    const std::vector<ParallelGptDecoderLayerWeight<T>*>* gpt_decoder_layer_weight)
+                                    const std::vector<ParallelGptDecoderLayerWeight<T>*>* gpt_decoder_layer_weight,
+                                    const int                                             profile_iters)
 {
     // input tensors:
     //      decoder_input [local_batch_size, hidden_dimension],
@@ -313,8 +314,20 @@ void ParallelGptDecoder<T>::forward(std::unordered_map<std::string, Tensor>*    
     const auto activation_in_type  = int8_mode_ == 2 ? TYPE_INT8 : data_type;
     const auto activation_out_type = data_type;
 
-    for (uint l = 0; l < num_layer_; l++) {
-        PUSH_RANGE(fmtstr("layer_%d", l));
+    std::vector<float> time_list;
+    uint l = num_layer_ - 1;
+
+    for (uint iter = 0; iter < profile_iters; iter++) {
+        cudaEvent_t start, stop;
+        float elapsed_time_ms=0.0f;
+        if (tensor_para_.rank_ == 0) {
+            cudaEventCreate(&start);
+            cudaEventCreate(&stop);
+            cudaEventRecord(start, 0);
+        }
+
+
+        PUSH_RANGE("layer_0");
         bool use_moe = std::find(moe_layer_index_.begin(), moe_layer_index_.end(), l) != moe_layer_index_.end();
         if (isValidLayerParallelId(l) == false) {
             continue;
@@ -638,6 +651,20 @@ void ParallelGptDecoder<T>::forward(std::unordered_map<std::string, Tensor>*    
         }
         POP_RANGE;
         POP_RANGE;
+        if (tensor_para_.rank_ == 0) {
+            cudaEventRecord(stop, 0);
+            cudaEventSynchronize(stop);
+            cudaEventElapsedTime(&elapsed_time_ms, start, stop);
+            time_list.push_back(elapsed_time_ms);
+            cudaEventDestroy(start);
+            cudaEventDestroy(stop);
+        }
+    }
+    if (tensor_para_.rank_ == 0) {
+        std::sort(time_list.begin(), time_list.end());
+        time_list.pop_back();
+        float mean = std::accumulate(time_list.begin(), time_list.end(), 0.0) / time_list.size();
+        std::cout<<std::to_string(local_batch_size)<<"-Decoder-"<<std::to_string(mean)<<std::endl;
     }
 
     if (is_free_buffer_after_forward_ == true) {

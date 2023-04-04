@@ -849,6 +849,52 @@ void ParallelGptContextDecoder<T>::forward(
     FT_LOG_DEBUG("%s stop", __PRETTY_FUNCTION__);
 }
 
+template<typename T>
+void ParallelGptContextDecoder<T>::forward(
+    TensorMap*                                            output_tensors,
+    const TensorMap*                                      input_tensors,
+    const std::vector<ParallelGptDecoderLayerWeight<T>*>* gpt_decoder_layer_weight,
+    const int                                             profile_iters)
+{
+    std::vector<float> time_list;
+    const bool use_shared_contexts = input_tensors->isExist("compact_idx");
+    Tensor decoder_input_tensor = input_tensors->at("decoder_input");
+    // Maybe compacted batch size.
+    const size_t batch_size =
+        use_shared_contexts ? input_tensors->at("compact_idx").shape[0] : decoder_input_tensor.shape[0];
+    // Request input length
+    const size_t seq_len = decoder_input_tensor.shape[1];
+    const size_t local_batch_size = getLocalBatchSize(batch_size, seq_len, pipeline_para_.world_size_);
+    // std::cout<<"ParallelGptContextDecoder "<<std::to_string(tensor_para_.rank_)<<std::endl;;
+    for (int i=0; i < profile_iters; i++) {
+        cudaEvent_t start, stop;
+        float elapsed_time_ms=0.0f;
+        if (tensor_para_.rank_ == 0) {
+            cudaEventCreate(&start);
+            cudaEventCreate(&stop);
+            cudaEventRecord(start, 0);
+        }
+
+        this->forward(output_tensors, input_tensors, gpt_decoder_layer_weight);
+        
+        if (tensor_para_.rank_ == 0) {
+            cudaEventRecord(stop, 0);
+            cudaEventSynchronize(stop);
+            cudaEventElapsedTime(&elapsed_time_ms, start, stop);
+            time_list.push_back(elapsed_time_ms);
+            // std::cout<<"time: "<<std::to_string(elapsed_time_ms)<<std::endl;
+            cudaEventDestroy(start);
+            cudaEventDestroy(stop);
+        }
+    }
+    if (tensor_para_.rank_ == 0) {
+        std::sort(time_list.begin(), time_list.end());
+        time_list.pop_back();
+        float mean = std::accumulate(time_list.begin(), time_list.end(), 0.0) / time_list.size();
+        std::cout<<std::to_string(local_batch_size)<<"-Encoder-"<<std::to_string(mean)<<std::endl;
+    }
+}
+
 template class ParallelGptContextDecoder<float>;
 template class ParallelGptContextDecoder<half>;
 #ifdef ENABLE_BF16

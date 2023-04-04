@@ -107,7 +107,8 @@ void fusedQKV_masked_attention_dispatch(const T*     qkv_buf,
     params.memory_max_len           = memory_max_len;
     params.prefix_prompt_lengths    = prefix_prompt_lengths;
     params.max_prefix_prompt_length = max_prefix_prompt_length;
-    params.length_per_sample        = sequence_lengths;  // max_input_length + current output length
+    params.length_per_sample        = nullptr;  // max_input_length + current output length
+    // params.length_per_sample        = sequence_lengths;  // max_input_length + current output length
     // timestep adding max_prefix_prompt_length for shared memory size calculation and rotary embedding computation
     params.timestep             = step + max_prefix_prompt_length - 1;
     params.num_heads            = head_num;

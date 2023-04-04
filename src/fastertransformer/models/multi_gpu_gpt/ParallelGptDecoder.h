@@ -116,7 +116,8 @@ public:
 
     void forward(std::unordered_map<std::string, Tensor>*              output_tensors,
                  const std::unordered_map<std::string, Tensor>*        input_tensors,
-                 const std::vector<ParallelGptDecoderLayerWeight<T>*>* decoder_layer_weights);
+                 const std::vector<ParallelGptDecoderLayerWeight<T>*>* decoder_layer_weights,
+                 const int                                             profile_iters=1);
 };
 
 }  // namespace fastertransformer

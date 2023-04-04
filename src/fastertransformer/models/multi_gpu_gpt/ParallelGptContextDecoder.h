@@ -141,6 +141,11 @@ public:
     void forward(TensorMap*                                            output_tensors,
                  const TensorMap*                                      input_tensors,
                  const std::vector<ParallelGptDecoderLayerWeight<T>*>* decoder_layer_weights);
+
+    void forward(TensorMap*                                            output_tensors,
+                 const TensorMap*                                      input_tensors,
+                 const std::vector<ParallelGptDecoderLayerWeight<T>*>* decoder_layer_weights,
+                 const int                                             profile_iters);
 };
 
 }  // namespace fastertransformer

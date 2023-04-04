@@ -154,7 +154,8 @@ void FtGptDecoder<T>::forward(const int64_t            max_input_length,
                               th::Tensor&              key_cache,
                               th::Tensor&              value_cache,
                               th::optional<th::Tensor> cache_indirection_opt,
-                              th::optional<th::Tensor> linear_bias_slopes_opt)
+                              th::optional<th::Tensor> linear_bias_slopes_opt,
+                              th::optional<int64_t>    profile_iters_opt)
 {
     // Input Arguments:
     //     input_embeds: [local_batch_size * beam_width, hidden_units], T
@@ -169,6 +170,7 @@ void FtGptDecoder<T>::forward(const int64_t            max_input_length,
     //     cache_indirection [local_batch_size, beam_width, memory_length], int, optional.
     //     linear_bias_slopes_opt: [num_heads], optional
 
+    int profile_iters = profile_iters_opt.has_value() ? (int)profile_iters_opt.value() : 2;
     auto stream        = at::cuda::getCurrentCUDAStream().stream();
     auto cublas_handle = at::cuda::getCurrentCUDABlasHandle();
     cublasSetStream(cublas_handle, stream);
@@ -241,7 +243,7 @@ void FtGptDecoder<T>::forward(const int64_t            max_input_length,
                                                                {"key_cache", convert_tensor<T>(key_cache)},
                                                                {"value_cache", convert_tensor<T>(value_cache)}};
 
-    gpt_decoder.forward(&output_tensors, &input_tensors, &gpt_layer_weights_);
+    gpt_decoder.forward(&output_tensors, &input_tensors, &gpt_layer_weights_, profile_iters);
 }
 
 ParallelGptDecoderOp::ParallelGptDecoderOp(const int64_t                 num_heads,
@@ -330,7 +332,8 @@ std::vector<th::Tensor> ParallelGptDecoderOp::forward(const int64_t            m
                                                       th::Tensor               key_cache,
                                                       th::Tensor               value_cache,
                                                       th::optional<th::Tensor> cache_indirection_opt,
-                                                      th::optional<th::Tensor> linear_bias_slopes_opt)
+                                                      th::optional<th::Tensor> linear_bias_slopes_opt,
+                                                      th::optional<int64_t>    profile_iters_opt)
 {
     CHECK_INPUT(input_embeds, scalar_type_);
     CHECK_INPUT(finished, torch::kBool);
@@ -360,7 +363,8 @@ std::vector<th::Tensor> ParallelGptDecoderOp::forward(const int64_t            m
                           key_cache,
                           value_cache,
                           cache_indirection_opt,
-                          linear_bias_slopes_opt);
+                          linear_bias_slopes_opt,
+                          profile_iters_opt);
     return std::vector<th::Tensor>{decoder_output};
 }
 

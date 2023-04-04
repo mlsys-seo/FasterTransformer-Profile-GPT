@@ -298,28 +298,28 @@ class GptLayerWeights:
         # Load
         # pylint:disable=line-too-long
         layer_offset = self.local_num_layers * self.pipeline_para_rank
-        [_load_from_file(f'model.layers.{layer_offset + i}.input_layernorm.weight.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.input_layernorm.bias.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.attention.query_key_value.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.attention.query_key_value.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.attention.dense.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.attention.dense.bias.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.post_attention_layernorm.weight.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.post_attention_layernorm.bias.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.mlp.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.mlp.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.mlp.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-        [_load_from_file(f'model.layers.{layer_offset + i}.mlp.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.input_layernorm.weight.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.input_layernorm.bias.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.attention.query_key_value.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.attention.query_key_value.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.attention.dense.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.attention.dense.bias.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.post_attention_layernorm.weight.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.post_attention_layernorm.bias.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.mlp.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.mlp.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.mlp.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+        [_load_from_file(f'model.layers.0.mlp.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
 
         if self.has_adapters:
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_attention_adapter.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_attention_adapter.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_attention_adapter.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_attention_adapter.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_ffn_adapter.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_ffn_adapter.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_ffn_adapter.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
-            [_load_from_file(f'model.layers.{layer_offset + i}.after_ffn_adapter.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_attention_adapter.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_attention_adapter.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_attention_adapter.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_attention_adapter.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_ffn_adapter.dense_h_to_4h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_ffn_adapter.dense_h_to_4h.bias.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_ffn_adapter.dense_4h_to_h.weight.{self.tensor_para_rank}.bin') for i in range(self.local_num_layers)]
+            [_load_from_file(f'model.layers.0.after_ffn_adapter.dense_4h_to_h.bias.bin') for i in range(self.local_num_layers)]
 
         assert len(self.weights) == len(self.expected_weight_shapes), "Incorrect number of weights loaded"
 
@@ -505,7 +505,8 @@ class GptContextDecoder(FtModuleBase):
                 memory_length: Optional[int] = None,
                 compact_index: Optional[torch.IntTensor] = None,
                 batch_to_compact_index: Optional[torch.IntTensor] = None,
-                linear_bias_slopes: Optional[torch.Tensor] = None):
+                linear_bias_slopes: Optional[torch.Tensor] = None,
+                profile_iters: int = 2):
         """
 
         # Args.
@@ -545,7 +546,8 @@ class GptContextDecoder(FtModuleBase):
             memory_length,
             compact_index,
             batch_to_compact_index,
-            linear_bias_slopes)
+            linear_bias_slopes,
+            profile_iters)
         return decoder_ouptut, key_cache, value_cache, last_token_hidden_states
 
 
@@ -665,7 +667,8 @@ class GptDecoder(FtModuleBase):
                 total_padding_tokens: torch.IntTensor,
                 masked_tokens: torch.BoolTensor,
                 cache_indirection: Optional[torch.IntTensor] = None,
-                linear_bias_slopes: Optional[torch.Tensor] = None):
+                linear_bias_slopes: Optional[torch.Tensor] = None,
+                profile_iters: int = 2):
         """
 
         # Args.
@@ -705,7 +708,8 @@ class GptDecoder(FtModuleBase):
                                      key_cache,
                                      value_cache,
                                      cache_indirection,
-                                     linear_bias_slopes)
+                                     linear_bias_slopes,
+                                     profile_iters)
         return outputs[0]
 
 
@@ -781,12 +785,6 @@ class Gpt:
         self.vocab_size_padded = local_vocab_size * self.config.tensor_para_size
         self.vocab_size = self.config.vocab_size
 
-        self.decode_op = torch.classes.FasterTransformer.DynamicDecodeOp(
-            self.vocab_size,
-            self.vocab_size_padded,
-            self.config.tensor_para_size,
-            self.config.pipeline_para_size,
-            torch.float)
 
         self._parameters = {}
 
@@ -803,38 +801,6 @@ class Gpt:
                 **kwargs))
         register_param('decoder', GptDecoder.from_config(self.config, **kwargs))
 
-        compute_dtype = to_torch_dtype(inference_data_type)
-
-        if comm.is_pipeline_group_first():
-            register_param(
-                'word_embedding',
-                torch.nn.Embedding(self.vocab_size_padded, hidden_dim, dtype=compute_dtype))
-            self._mask_padded_vocab_weights(self.word_embedding.weight)
-            if self.config.has_positional_encoding:
-                register_param(
-                    'position_encoding',
-                    torch.nn.Embedding(self.config.max_seq_len, hidden_dim, dtype=compute_dtype))
-            else:
-                self.position_encoding = None
-            if self.config.has_pre_decoder_layernorm:
-                register_param(
-                    'pre_decoder_layernorm',
-                    torch.nn.LayerNorm(hidden_dim, eps=layernorm_eps, dtype=compute_dtype))
-            else:
-                self.pre_decoder_layernorm = None
-
-        if comm.is_pipeline_group_last():
-            if has_post_decoder_layernorm:
-                register_param(
-                    'post_decoder_layernorm',
-                    torch.nn.LayerNorm(hidden_dim, eps=layernorm_eps, dtype=compute_dtype))
-            else:
-                self.post_decoder_layernorm = None
-            self.lm_head_ctype = compute_dtype if not self.use_fp32_to_compute_logit else torch.float32
-            register_param(
-                'lm_head',
-                torch.nn.Linear(hidden_dim, self.vocab_size_padded, bias=False, dtype=self.lm_head_ctype))
-            self._mask_padded_vocab_weights(self.lm_head.weight)
 
     @classmethod
     def from_config(cls, config: GptInitModelParameters, **kwargs):
@@ -880,58 +846,6 @@ class Gpt:
         self.context_decoder.set_weight(self.weight)
         self.decoder.set_weight(self.weight)
 
-        weight_dtype = to_numpy_dtype(config.weights_data_type)
-
-        def _safe_load_from_bin(param: torch.nn.Parameter, fname):
-            if (checkpoint_path / fname).exists():
-                # np_w is 1-D array since a bin file doesn't have shape info.
-                w_ = np.fromfile(checkpoint_path / fname, dtype=weight_dtype)
-                param.data = torch.from_numpy(w_).reshape(param.data.shape).to(compute_dtype)
-            else:
-                raise FileNotFoundError(f'Faile to load {fname}')
-
-        def _safe_load_lm_head_from_bin(param, fname, ctype):
-            if (checkpoint_path / fname).exists():
-                shape = (self.vocab_size, self.config.head_num * self.config.size_per_head)
-                # np_w is 1-D array since a bin file doesn't have shape info.
-                w_ = np.fromfile(checkpoint_path / fname, dtype=weight_dtype)
-                param.data = param.data.to(ctype)
-                param.data[:self.vocab_size, :] = torch.from_numpy(w_).reshape(shape).to(ctype)
-            else:
-                print(f'Faile to load {fname}')
-                torch.nn.init.normal_(param).to(compute_dtype)
-            self._mask_padded_vocab_weights(param)
-
-        # pylint:disable=line-too-long
-        if comm.is_pipeline_group_first():
-            _safe_load_lm_head_from_bin(self.word_embedding.weight, 'model.wte.bin', compute_dtype)
-            self._mask_padded_vocab_weights(self.word_embedding.weight)
-            if self.position_encoding is not None:
-                _safe_load_from_bin(self.position_encoding.weight, 'model.wpe.bin')
-            if self.pre_decoder_layernorm is not None:
-                _safe_load_from_bin(self.pre_decoder_layernorm.weight,
-                                    'model.pre_decoder_layernorm.weight.bin')
-                _safe_load_from_bin(self.pre_decoder_layernorm.bias,
-                                    'model.pre_decoder_layernorm.bias.bin')
-        if comm.is_pipeline_group_last():
-            if self.post_decoder_layernorm is not None:
-                _safe_load_from_bin(self.post_decoder_layernorm.weight,
-                                    'model.final_layernorm.weight.bin')
-                _safe_load_from_bin(self.post_decoder_layernorm.bias,
-                                    'model.final_layernorm.bias.bin')
-            if (checkpoint_path / 'model.lm_head.weight.bin').exists():
-                _safe_load_lm_head_from_bin(self.lm_head.weight, 'model.lm_head.weight.bin', self.lm_head_ctype)
-            else:
-                if self.use_fp32_to_compute_logit:
-                    _safe_load_lm_head_from_bin(self.lm_head.weight, 'model.wte.bin', torch.float32)
-                else:
-                    # In this branch we can share the pre and post decoder embeddings, but ONLY pipeline size is 1. 
-                    # When pipeline size > 1, these two weights will end up on different GPUs, so we must load the
-                    # post decoder weight again (else case).
-                    if comm.get_pipeline_para_size() == 1:
-                        self.lm_head.weight = self.word_embedding.weight
-                    else:
-                        _safe_load_lm_head_from_bin(self.lm_head.weight, 'model.wte.bin', compute_dtype)
 
         self.to(device)
 
@@ -1014,27 +928,8 @@ class Gpt:
                  input_token_ids: torch.IntTensor,
                  input_lengths: torch.IntTensor,
                  gen_length: int,
-                 eos_token_id: Optional[int] = None,
                  local_batch_size: Optional[int] = None,
-                 beam_width: int = 1,
-                 top_k: Optional[torch.IntTensor] = None,
-                 top_p: Optional[torch.FloatTensor] = None,
-                 top_p_decay: Optional[torch.FloatTensor] = None,
-                 top_p_min: Optional[torch.FloatTensor] = None,
-                 top_p_reset_ids: Optional[torch.IntTensor] = None,
-                 temperature: Optional[torch.FloatTensor] = None,
-                 repetition_penalty: Optional[torch.FloatTensor] = None,
-                 presence_penalty: Optional[torch.FloatTensor] = None,
-                 min_length: Optional[torch.IntTensor] = None,
-                 len_penalty: Optional[torch.FloatTensor] = None,
-                 beam_search_diversity_rate: Optional[torch.FloatTensor] = None,
-                 stop_words_list: Optional[torch.IntTensor] = None,
-                 bad_words_list: Optional[torch.IntTensor] = None,
-                 sequence_limit_lengths: Optional[torch.IntTensor] = None,
-                 random_seed: Optional[torch.LongTensor] = None,
-                 memory_length: Optional[int] = None,
-                 return_output_length: bool = False,
-                 return_log_probs: bool = False):
+                 profile_iters: int = 2):
         """
 
         # Args.
@@ -1088,61 +983,11 @@ class Gpt:
         batch_size = len(input_token_ids)
         max_input_length = input_token_ids.shape[-1]
         max_seq_length = max_input_length + gen_length
-        memory_length = memory_length or max_seq_length
 
-        # TODO: Enable local batch later. We currently disable local batching due to
-        #   an input mismatch issue of FT's decode_op: FT's decode_op requires logits
-        #   of shape (batch_size, ...) but we have logits of shape (local_batch_size, ...)
-        #   After fixing FT's side, we will enable local batch.
-        # local_batch_size = local_batch_size or self.get_local_batch_size(batch_size)
-        # num_local_batches, last_chunk = divmod(batch_size, local_batch_size)
-        # if last_chunk > 0:
-        #     num_local_batches += 1
         assert local_batch_size is None or local_batch_size == batch_size
         local_batch_size = batch_size
-        num_local_batches = 1
 
         device = self.device
-
-        eos_token_id = eos_token_id if eos_token_id is not None else self.config.end_id
-        assert eos_token_id is not None, 'eos_token-id must be specified in generation.'
-        eos_token_ids = eos_token_id * torch.ones(batch_size, dtype=torch.int32, device=device)
-        assert repetition_penalty is None or presence_penalty is None,\
-            'Found ambiguous parameters repetition_penalty and presence_penalty '\
-            'which are mutually exclusive. Please provide one of repetition_penalty '\
-            'and presence_penalty.'
-        # Setup decoder_op prior to calling the forward function.
-        self.decode_op.setup(batch_size,
-                             beam_width,
-                             top_k,
-                             top_p,
-                             temperature,
-                             repetition_penalty,
-                             presence_penalty,
-                             min_length,
-                             len_penalty,
-                             beam_search_diversity_rate,
-                             random_seed,
-                             top_p_decay,
-                             top_p_min,
-                             top_p_reset_ids)
-
-        # Prepare input and output arguments.
-        if beam_width > 1:
-            # Tiling for beam search.
-            input_token_ids = input_token_ids.repeat(1, beam_width).view(batch_size * beam_width, -1)
-            input_lengths = input_lengths.view(-1, 1).repeat(1, beam_width).view(-1)
-            if sequence_limit_lengths is not None:
-                sequence_limit_lengths = sequence_limit_lengths.view(-1, 1).repeat(1, beam_width).view(-1)
-            # src/tgt cache indirections.
-            cache_indirection = torch.zeros(
-                (2, batch_size, beam_width, memory_length), dtype=torch.int32, device=device)
-            parent_ids = torch.zeros(max_seq_length, batch_size * beam_width, dtype=torch.int32, device=device)
-        else:
-            cache_indirection = None
-            src_cache_indirection = None
-            tgt_cache_indirection = None
-            parent_ids = None
 
         pad_lengths = max_input_length - input_lengths
         # Since tril() doesn't support bf16 dtype, we create of bool type and then cast it to dtype.
@@ -1151,178 +996,49 @@ class Gpt:
             .tril().unsqueeze(0).tile(input_token_ids.shape[0], 1, 1).to(self.dtype)
         for b, input_length in enumerate(input_lengths):
             attention_mask[b, input_length:, ...] = 0
-        masked_tokens = self.generate_pad_mask(input_lengths, memory_length)
+        masked_tokens = self.generate_pad_mask(input_lengths, max_seq_length)
         finished = torch.zeros_like(input_lengths).bool()
         sequence_lengths = (max_input_length - 1) * torch.ones_like(input_lengths)
 
-        if return_log_probs or beam_width > 1:
-            cum_log_probs = torch.zeros(batch_size * beam_width, device=device)
-            output_log_probs = torch.zeros((gen_length, batch_size * beam_width), device=device)
-        else:
-            cum_log_probs = None
-            output_log_probs = None
-
-        # Contiguous buffer for each decode_op step, it will be transposed tensor for the final output.
-        output_token_ids = torch.zeros(
-            (max_seq_length, batch_size * beam_width), dtype=torch.int32, device=device)
-        output_token_ids[:max_input_length, ...] = input_token_ids.T
-
-        if comm.is_pipeline_group_first():
-            # Prepare input tensors of decoder.
-            input_embeds = self.word_embedding(input_token_ids)
-            if self.position_encoding is not None:
-                position_ids = torch.arange(0, max_input_length, dtype=torch.int, device=device)
-                position_ids = position_ids.unsqueeze(0).view(-1, max_input_length)
-                input_embeds += self.position_encoding(position_ids)
-            if self.pre_decoder_layernorm is not None:
-                input_embeds = self.pre_decoder_layernorm(input_embeds)
-        else:
-            # Dummy input_embeds
-            input_embeds = torch.empty(
-                size=(batch_size * beam_width, max_input_length, self.context_decoder.hidden_size),
-                dtype=self.context_decoder.dtype,
-                device=device)
-
-        use_shared_contexts = (self.shared_contexts_ratio > 0.) and (max_input_length >= 1) and (batch_size > 1)
-        batch_to_compact, compact_to_batch = None, None
-        if use_shared_contexts:
-            find_context_duplications = torch.ops.fastertransformer.find_context_duplications
-            batch_to_compact, compact_to_batch = find_context_duplications(input_token_ids)
-            use_shared_contexts = compact_to_batch.shape[0] <= self.shared_contexts_ratio * batch_size
-
-            if not use_shared_contexts:
-                batch_to_compact, compact_to_batch = None , None
+        input_embeds = torch.empty(
+            size=(batch_size, max_input_length, self.context_decoder.hidden_size),
+            dtype=self.context_decoder.dtype,
+            device=device)
 
         profiler.start('ft-context-decoder')
         _, k_cache, v_cache, last_token_hidden_states = self.context_decoder.forward(
             input_embeds=input_embeds,
             attention_mask=attention_mask,
             input_lengths=input_lengths,
-            memory_length=memory_length,
-            batch_to_compact_index=batch_to_compact,
-            compact_index=compact_to_batch)
+            memory_length=max_seq_length,
+            batch_to_compact_index=None,
+            compact_index=None,
+            profile_iters=profile_iters)
         profiler.stop('ft-context-decoder')
 
-        for step in range(max_input_length, max_seq_length):
-            src_indir_idx = (step - max_input_length) % 2
-            tgt_indir_idx = 1 - src_indir_idx
+        step = max_seq_length - 1
 
-            is_generation_done = torch.tensor([True], dtype=torch.bool, device=device)
-            for ite in range(num_local_batches):
-                # The indices of the current local batch-beam.
-                bbidx = range(
-                    ite * local_batch_size * beam_width,
-                    min((ite + 1) * local_batch_size * beam_width, batch_size * beam_width))
-                if cache_indirection is not None:
-                    bidx = range(ite * local_batch_size,
-                                 min((ite + 1) * local_batch_size, batch_size))
-                    src_cache_indirection = cache_indirection[src_indir_idx, bidx, ...]
-                    tgt_cache_indirection = cache_indirection[tgt_indir_idx, bidx, ...]
+        bbidx = range(
+            0,
+            min(local_batch_size, batch_size))
 
-                if step == max_input_length:
-                    hidden_states = last_token_hidden_states[bbidx, ...]
-                else:
-                    if comm.is_pipeline_group_first():
-                        input_embeds = self.word_embedding(output_token_ids[step - 1, bbidx])
-                        if self.position_encoding is not None:
-                            position_ids = (step - 1) * torch.ones_like(pad_lengths[bbidx])
-                            input_embeds += self.position_encoding(position_ids)
-                        if self.pre_decoder_layernorm is not None:
-                            input_embeds = self.pre_decoder_layernorm(input_embeds)
-                    else:
-                        # Dummy input_imbeds
-                        input_embeds = torch.empty(
-                            size=(len(bbidx), self.decoder.hidden_size),
-                            dtype=self.decoder.dtype,
-                            device=device)
+        input_embeds = torch.empty(
+            size=(len(bbidx), self.decoder.hidden_size),
+            dtype=self.decoder.dtype,
+            device=device)
 
-                    profiler.start('ft-decoder')
-                    hidden_states = self.decoder.forward(
-                        max_input_length=max_input_length,
-                        step=step,
-                        ite=ite,
-                        input_embeds=input_embeds,
-                        sequence_lengths=sequence_lengths[bbidx],
-                        key_cache=k_cache,
-                        value_cache=v_cache,
-                        finished=finished[bbidx],
-                        total_padding_tokens=pad_lengths[bbidx],
-                        cache_indirection=src_cache_indirection,
-                        masked_tokens=masked_tokens[bbidx, ...])
-                    profiler.stop('ft-decoder')
-
-                if comm.is_pipeline_group_last():
-                    if self.post_decoder_layernorm is not None:
-                        hidden_states = self.post_decoder_layernorm(hidden_states)
-
-                    # We use logits of fp32 type to avoid overflow issue.
-                    if self.use_fp32_to_compute_logit:
-                        # The FT GPT op internally uses FP32 compute type for matrix multiplication.
-                        # This will produce the same result with the end-to-end FT's GPT op.
-                        logits = torch.nn.functional.linear(hidden_states.float(), self.lm_head.weight)
-                    else:
-                        logits = self.lm_head(hidden_states).float()
-
-                    profiler.start('ft-decode')
-                    should_stop = self.decode_op.forward(
-                        logits.view(batch_size, beam_width, -1),
-                        step,
-                        max_input_length,
-                        ite,
-                        local_batch_size,
-                        eos_token_ids,
-                        top_k,
-                        top_p,
-                        temperature,
-                        repetition_penalty,
-                        presence_penalty,
-                        min_length,
-                        len_penalty,
-                        beam_search_diversity_rate,
-                        top_p_decay,
-                        top_p_min,
-                        top_p_reset_ids,
-                        None,
-                        input_lengths,
-                        sequence_limit_lengths,
-                        stop_words_list,
-                        bad_words_list,
-                        src_cache_indirection,
-                        output_token_ids.view(-1, batch_size, beam_width),
-                        finished,
-                        sequence_lengths,
-                        cum_log_probs,
-                        output_log_probs,
-                        parent_ids,
-                        tgt_cache_indirection)
-                    profiler.stop('ft-decode')
-                    is_generation_done &= should_stop
-
-            # Broadcast from the last pipeline node if needed.
-            profiler.start('ft-bcast')
-            tensors_to_bcast = [output_token_ids[step, ...],
-                                finished,
-                                sequence_lengths,
-                                is_generation_done]
-            if beam_width > 1:
-                tensors_to_bcast.append(tgt_cache_indirection)
-            self.decode_op.broadcast_from_last_pipeline(tensors_to_bcast)
-            profiler.stop('ft-bcast')
-
-            if is_generation_done or finished.all():
-                break
-
-        # Transpose (L, batch, beam) -> (batch, beam, L)
-        output_token_ids = output_token_ids.view(-1, batch_size, beam_width).permute(1, 2, 0)
-
-        # Increase sequence_length by 1 because the sequence length of time step t is t - 1.
-        sequence_lengths += 1
-
-        # Outputs
-        output_dict = dict(output_token_ids=output_token_ids)
-        if return_output_length:
-            output_dict['output_lengths'] = sequence_lengths
-        if return_log_probs:
-            output_dict['cum_log_probs'] = cum_log_probs
-            output_dict['output_log_probs'] = output_log_probs
-        return output_dict
+        profiler.start('ft-decoder')
+        self.decoder.forward(
+            max_input_length=max_input_length,
+            step=step,
+            ite=0,
+            input_embeds=input_embeds,
+            sequence_lengths=sequence_lengths[bbidx],
+            key_cache=k_cache,
+            value_cache=v_cache,
+            finished=finished[bbidx],
+            total_padding_tokens=pad_lengths[bbidx],
+            cache_indirection=None,
+            masked_tokens=masked_tokens[bbidx, ...],
+            profile_iters=profile_iters)
+        profiler.stop('ft-decoder')

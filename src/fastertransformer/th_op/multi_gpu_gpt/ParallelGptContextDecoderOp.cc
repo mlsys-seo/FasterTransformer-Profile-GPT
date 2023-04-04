@@ -152,8 +152,10 @@ void FtGptContextDecoder<T>::forward(th::Tensor&              decoder_output,
                                      th::Tensor&              input_lengths,
                                      th::optional<th::Tensor> compact_idx,
                                      th::optional<th::Tensor> batch_to_compact_idx,
-                                     th::optional<th::Tensor> linear_bias_slopes)
+                                     th::optional<th::Tensor> linear_bias_slopes,
+                                     th::optional<int64_t>    profile_iters_opt)
 {
+    int profile_iters = profile_iters_opt.has_value() ? (int)profile_iters_opt.value() : 0;
     auto stream        = at::cuda::getCurrentCUDAStream().stream();
     auto cublas_handle = at::cuda::getCurrentCUDABlasHandle();
     cublasSetStream(cublas_handle, stream);
@@ -228,7 +230,8 @@ void FtGptContextDecoder<T>::forward(th::Tensor&              decoder_output,
                                   {"value_cache", convert_tensor<T>(value_cache)},
                                   {"last_token_hidden_units", convert_tensor<T>(last_token_hidden_states)}});
 
-    gpt_context_decoder.forward(&output_tensors, &input_tensors, &gpt_layer_weights_);
+    gpt_context_decoder.forward(&output_tensors, &input_tensors, &gpt_layer_weights_, profile_iters);
+    // gpt_context_decoder.forward(&output_tensors, &input_tensors, &gpt_layer_weights_);
 }
 
 ParallelGptContextDecoderOp::ParallelGptContextDecoderOp(const int64_t                 num_heads,
@@ -322,7 +325,8 @@ std::vector<th::Tensor> ParallelGptContextDecoderOp::forward(th::Tensor         
                                                              th::optional<int64_t>    memory_length_opt,
                                                              th::optional<th::Tensor> compact_idx_opt,
                                                              th::optional<th::Tensor> batch_to_compact_idx_opt,
-                                                             th::optional<th::Tensor> linear_bias_slopes_opt)
+                                                             th::optional<th::Tensor> linear_bias_slopes_opt,
+                                                             th::optional<int64_t>    profile_iters_opt)
 {
     // Input Arguments:
     //     input_embeds: [batch_size * beam_width, max_input_length, hidden_units], T
@@ -392,7 +396,8 @@ std::vector<th::Tensor> ParallelGptContextDecoderOp::forward(th::Tensor         
                                   input_lengths,
                                   compact_idx_opt,
                                   batch_to_compact_idx_opt,
-                                  linear_bias_slopes_opt);
+                                  linear_bias_slopes_opt,
+                                  profile_iters_opt);
 
     return std::vector<th::Tensor>{decoder_output, key_cache, value_cache, last_token_hidden_states};
 }

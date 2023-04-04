@@ -35,7 +35,8 @@ public:
                          th::Tensor&              input_lengths,
                          th::optional<th::Tensor> compact_idx,
                          th::optional<th::Tensor> batch_to_compact_idx,
-                         th::optional<th::Tensor> linear_bias_slopes) = 0;
+                         th::optional<th::Tensor> linear_bias_slopes,
+                         th::optional<int64_t>    profile_iters_opt) = 0;
 };
 
 template<typename T>
@@ -65,7 +66,8 @@ public:
                  th::Tensor&              input_lengths,
                  th::optional<th::Tensor> compact_idx,
                  th::optional<th::Tensor> batch_to_compact_idx,
-                 th::optional<th::Tensor> linear_bias_slopes) override;
+                 th::optional<th::Tensor> linear_bias_slopes,
+                 th::optional<int64_t>    profile_iters_opt) override;
 
 private:
     const size_t num_heads_;
@@ -121,7 +123,8 @@ public:
                                     th::optional<int64_t>    memory_length_opt,
                                     th::optional<th::Tensor> compact_idx_opt,
                                     th::optional<th::Tensor> batch_to_compact_idx_opt,
-                                    th::optional<th::Tensor> linear_bias_slopes_opt);
+                                    th::optional<th::Tensor> linear_bias_slopes_opt,
+                                    th::optional<int64_t>    profile_iters_opt);
 
 private:
     size_t num_heads_;
