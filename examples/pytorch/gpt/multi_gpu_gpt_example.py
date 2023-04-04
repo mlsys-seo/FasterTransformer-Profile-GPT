@@ -133,6 +133,9 @@ def main():
                     gen_length=output_len,
                     local_batch_size=batch_size,
                     profile_iters=args.profile_iters)
+        
+        del start_ids
+        del start_lengths
  
 
 if __name__ == '__main__':
