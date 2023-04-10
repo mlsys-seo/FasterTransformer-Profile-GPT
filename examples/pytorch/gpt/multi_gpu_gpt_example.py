@@ -122,17 +122,25 @@ def main():
         weights_data_type=args.weights_data_type)
     gpt.load(args.ckpt_path, args.inference_data_type)
 
-    for batch_size in range (args.end_batch_size, args.start_batch_size - 1, -args.batch_size_hop):
+    # for batch_size in range (args.end_batch_size, args.start_batch_size - 1, -args.batch_size_hop):
+    batch_size = args.start_batch_size
+    # for batch_size in range (args.start_batch_size, args.end_batch_size + 1, args.batch_size_hop):
+    while True:
         start_ids = [torch.IntTensor([end_id for _ in range(args.input_len)])] * batch_size
         start_lengths = [len(ids) for ids in start_ids]
         start_ids = pad_sequence(start_ids, batch_first=True, padding_value=end_id)
         start_lengths = torch.IntTensor(start_lengths)
         
-        gpt.generate(input_token_ids=start_ids,
-                    input_lengths=start_lengths,
-                    gen_length=output_len,
-                    local_batch_size=batch_size,
-                    profile_iters=args.profile_iters)
+        try:
+            gpt.generate(input_token_ids=start_ids,
+                        input_lengths=start_lengths,
+                        gen_length=output_len,
+                        local_batch_size=batch_size,
+                        profile_iters=args.profile_iters)
+        except:
+            print("OOM")
+            break
+        batch_size += args.batch_size_hop
         
         del start_ids
         del start_lengths
