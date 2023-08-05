@@ -998,9 +998,9 @@ class Gpt:
             attention_mask[b, input_length:, ...] = 0
         masked_tokens = self.generate_pad_mask(input_lengths, max_seq_length)
         finished = torch.zeros_like(input_lengths).bool()
-        sequence_lengths = (max_input_length - 1) * torch.ones_like(input_lengths)
+        sequence_lengths = (max_input_length - 1) // 2 * torch.ones_like(input_lengths)
 
-        input_embeds = torch.empty(
+        input_embeds = torch.rand(
             size=(batch_size, max_input_length, self.context_decoder.hidden_size),
             dtype=self.context_decoder.dtype,
             device=device)
@@ -1016,13 +1016,13 @@ class Gpt:
             profile_iters=profile_iters)
         profiler.stop('ft-context-decoder')
 
-        step = max_seq_length - 1
+        step = max_input_length + (gen_length // 2) - 1
 
         bbidx = range(
             0,
             min(local_batch_size, batch_size))
 
-        input_embeds = torch.empty(
+        input_embeds = torch.rand(
             size=(len(bbidx), self.decoder.hidden_size),
             dtype=self.decoder.dtype,
             device=device)

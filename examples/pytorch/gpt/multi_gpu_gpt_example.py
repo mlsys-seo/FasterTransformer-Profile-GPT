@@ -32,6 +32,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input_len', type=int, default=1,
                         help='input sequence length to generate.')
+    parser.add_argument('--max_input_len', type=int, default=1,
+                        help='input sequence length to generate.')
     parser.add_argument('--output_len', type=int, default=32,
                         help='output sequence length to generate.')
     parser.add_argument('--head_num', type=int, default=16,
@@ -124,13 +126,28 @@ def main():
 
     # for batch_size in range (args.end_batch_size, args.start_batch_size - 1, -args.batch_size_hop):
     # batch_size = args.start_batch_size
-    for batch_size in range (args.start_batch_size, args.end_batch_size + 1, args.batch_size_hop):
+    if args.start_batch_size < 32:
+        args.start_batch_size = 32
+    profile_b_list = list(range(1,32)) + list(range(args.start_batch_size, args.end_batch_size + 1, args.batch_size_hop))
+    for batch_size in profile_b_list:
     # while True:
-        start_ids = [torch.IntTensor([end_id for _ in range(args.input_len)])] * batch_size
-        start_lengths = [len(ids) for ids in start_ids]
-        start_ids = pad_sequence(start_ids, batch_first=True, padding_value=end_id)
-        start_lengths = torch.IntTensor(start_lengths)
+        max_workload = round(args.input_len * batch_size * 1.05)
+        seq_per_batch = max_workload // batch_size
+        # start_ids = [torch.IntTensor([111 for _ in range(args.input_len)])] * batch_size
+        start_ids = []
+        for idx in range(batch_size):
+            if max_workload > seq_per_batch:
+                start_ids.append(torch.IntTensor([111 for _ in range(seq_per_batch)]))
+                max_workload -= seq_per_batch
+            elif (idx == batch_size - 1) or (max_workload <= seq_per_batch):
+                start_ids.append(torch.IntTensor([111 for _ in range(max_workload)]))
         
+        # start_ids = [torch.IntTensor([111 for _ in range(args.input_len)])] * batch_size
+        start_ids.append(torch.IntTensor([111 for _ in range(args.max_input_len)]))
+        start_lengths = [len(ids) for ids in start_ids[:-1]]
+        start_ids = pad_sequence(start_ids, batch_first=True, padding_value=end_id)
+        start_ids = start_ids[:-1]
+        start_lengths = torch.IntTensor(start_lengths)
         try:
             gpt.generate(input_token_ids=start_ids,
                         input_lengths=start_lengths,
